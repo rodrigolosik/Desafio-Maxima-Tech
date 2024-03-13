@@ -19,28 +19,44 @@ public class ProductsController : Controller
 
     public async Task<ActionResult> Index()
     {
-        var products = await _productService.GetAllAsync();
+        try
+        {
+            var products = await _productService.GetAllAsync();
 
-        return View(products);
+            return View(products);
+        }
+        catch (Exception ex)
+        {
+            var products = Enumerable.Empty<ProductViewModel>();
+
+            return View(products);
+        }
     }
 
     public async Task<ActionResult> CreateOrEdit(Guid? id)
     {
         var productViewModel = new CreateOrUpdateProductViewModel();
 
-        var departments = await _departmentService.GetAllAsync();
-
-        productViewModel.DepartmentViewModel = departments;
-
-        if (id != null && id != Guid.Empty)
+        try
         {
-            var product = await _productService.GetByIdAsync(id.Value);
-            
-            productViewModel.ProductViewModel = product;
-            productViewModel.ProductId = id.Value;
-        }
+            var departments = await _departmentService.GetAllAsync();
 
-        return View(productViewModel);
+            productViewModel.DepartmentViewModel = departments;
+
+            if (id != null && id != Guid.Empty)
+            {
+                var product = await _productService.GetByIdAsync(id.Value);
+
+                productViewModel.ProductViewModel = product;
+                productViewModel.ProductId = id.Value;
+            }
+
+            return View(productViewModel);
+        }
+        catch (Exception)
+        {
+            return View(productViewModel);
+        }
     }
 
     [HttpPost]

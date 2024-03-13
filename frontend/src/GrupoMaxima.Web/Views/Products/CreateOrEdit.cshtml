@@ -5,7 +5,7 @@
 }
 
 <div class="container">
-    
+
     <h1>@ViewData["Title"]</h1>
 
     <hr />
@@ -25,12 +25,21 @@
                 </div>
                 <div class="form-group">
                     <label class="control-label">Department</label>
-                    <select asp-for="ProductViewModel.DepartmentId" class="form-control">
-                        @foreach (var item in Model.DepartmentViewModel)
-                        {
-                            <option value="@item.Id">@item.Description</option>
-                        }
-                    </select>
+                    @if (Model.DepartmentViewModel != null)
+                    {
+                        <select asp-for="ProductViewModel.DepartmentId" class="form-control">
+                            @foreach (var item in Model.DepartmentViewModel)
+                            {
+                                <option value="@item.Id">@item.Description</option>
+                            }
+                        </select>
+                    }
+                    else
+                    {
+                        <select asp-for="ProductViewModel.DepartmentId" class="form-control">
+                            <option>Selecione</option>
+                        </select>
+                    }
                     <span asp-validation-for="ProductViewModel.DepartmentId" class="text-danger"></span>
                 </div>
                 <div class="form-group">

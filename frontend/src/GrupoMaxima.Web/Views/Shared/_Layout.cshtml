@@ -14,23 +14,22 @@
 </head>
 <body>
     <header>
-        @if (!SignInManager.IsSignedIn(User))
-        {
-            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-                <div class="container-fluid">
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MaximaTech</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                            aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                        <ul class="navbar-nav flex-grow-1">
-                        </ul>
-                        <partial name="_LoginPartial" />
-                    </div>
+
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MaximaTech</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                    </ul>
+                    <partial name="_LoginPartial" />
                 </div>
-            </nav>
-        }
+            </div>
+        </nav>
+
     </header>
     <div class="container-fluid">
         <div class="row">
@@ -39,38 +38,14 @@
 
                     <ul class="nav nav-pills flex-column mb-auto">
                         <li class="nav-item">
-                            <a href="#" class="nav-link active" aria-current="page">
+                            <a asp-controller="Products" asp-action="Index" class="nav-link active" aria-current="page">
                                 <svg class="bi me-2" width="16" height="16"><use xlink:href="#home"></use></svg>
-                                Home
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#speedometer2"></use></svg>
-                                Dashboard
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#table"></use></svg>
-                                Orders
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#grid"></use></svg>
-                                Products
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="nav-link link-dark">
-                                <svg class="bi me-2" width="16" height="16"><use xlink:href="#people-circle"></use></svg>
-                                Customers
+                                Produtos
                             </a>
                         </li>
                     </ul>
                 </div>
-                
+
             </div>
 
             <!-- Conteúdo Principal -->
