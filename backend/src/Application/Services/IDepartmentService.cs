@@ -1,8 +1,8 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos;
 
 namespace Application.Services;
 
 public interface IDepartmentService
 {
-    Task<IEnumerable<Department>> ListAllAsync();
+    Task<IEnumerable<DepartmentDto>> GetAllAsync();
 }

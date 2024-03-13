@@ -10,5 +10,4 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
-    public DbSet<ProductViewModel> ProductViewModel { get; set; } = default!;
 }

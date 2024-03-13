@@ -1,29 +1,27 @@
 ﻿using Application.Services;
-using Domain.Models;
+using Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
-namespace GrupoMaxima.Api.Controllers
+namespace GrupoMaxima.Api.Controllers;
+
+[Route("api/[controller]")]
+[ApiController]
+public class DepartmentsController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DepartmentsController : ControllerBase
+    private readonly IDepartmentService _departmentsService;
+
+    public DepartmentsController(IDepartmentService departmentService)
     {
-        private readonly IDepartmentService _departmentsService;
+        _departmentsService = departmentService;
+    }
 
-        public DepartmentsController(IDepartmentService departmentService)
-        {
-            _departmentsService = departmentService;
-        }
+    [HttpGet]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(DepartmentDto))]
+    public async Task<IActionResult> Get()
+    {
+        var departments = await _departmentsService.GetAllAsync();
 
-        [HttpGet]
-        [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Department))]
-        public async Task<IActionResult> Get()
-        {
-            var departments = await _departmentsService.ListAllAsync();
-
-            return Ok(departments);
-        }
-
+        return Ok(departments);
     }
 }

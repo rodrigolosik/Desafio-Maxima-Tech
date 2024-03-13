@@ -17,7 +17,6 @@ public class ProductsController : Controller
         _departmentService = departmentService;
     }
 
-    // GET: ProductsController
     public async Task<ActionResult> Index()
     {
         var products = await _productService.GetAllAsync();
@@ -25,7 +24,6 @@ public class ProductsController : Controller
         return View(products);
     }
 
-    // GET: ProductsController/Create
     public async Task<ActionResult> CreateOrEdit(Guid? id)
     {
         var productViewModel = new CreateOrUpdateProductViewModel();
@@ -34,10 +32,12 @@ public class ProductsController : Controller
 
         productViewModel.DepartmentViewModel = departments;
 
-        if (id != null)
+        if (id != null && id != Guid.Empty)
         {
             var product = await _productService.GetByIdAsync(id.Value);
+            
             productViewModel.ProductViewModel = product;
+            productViewModel.ProductId = id.Value;
         }
 
         return View(productViewModel);
@@ -60,9 +60,9 @@ public class ProductsController : Controller
 
             return RedirectToAction(nameof(Index));
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            return View("CreateOrEdit", viewModel);
         }
     }
 }

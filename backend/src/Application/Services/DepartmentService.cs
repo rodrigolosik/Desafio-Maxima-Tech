@@ -1,5 +1,6 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos;
 using Infrastructure.Repositories;
+using Mapster;
 
 namespace Application.Services;
 
@@ -12,8 +13,12 @@ public class DepartmentService : IDepartmentService
         _departmentRepository = departmentRepository;
     }
 
-    public async Task<IEnumerable<Department>> ListAllAsync()
+    public async Task<IEnumerable<DepartmentDto>> GetAllAsync()
     {
-        return await _departmentRepository.GetAllAsync();
+        var departments = await _departmentRepository.GetAllAsync();
+
+        var result = departments.Adapt<IEnumerable<DepartmentDto>>();
+
+        return result;
     }
 }

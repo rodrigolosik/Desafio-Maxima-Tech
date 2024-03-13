@@ -1,5 +1,7 @@
-﻿using Domain.Models;
+﻿using Domain.Dtos;
+using Domain.Models;
 using Infrastructure.Repositories;
+using Mapster;
 
 namespace Application.Services;
 
@@ -12,8 +14,10 @@ public class ProductService : IProductService
         _productRepository = productRepository;
     }
 
-    public async Task CreateAsync(Product product)
+    public async Task CreateAsync(ProductDto productDto)
     {
+        var product = productDto.Adapt<Product>();
+
         await _productRepository.CreateAsync(product);
     }
 
@@ -22,18 +26,28 @@ public class ProductService : IProductService
         await _productRepository.DeleteAsync(id);
     }
 
-    public async Task<IEnumerable<Product>> GetAllAsync()
+    public async Task<IEnumerable<ProductDto>> GetAllAsync()
     {
-        return await _productRepository.GetAllAsync();
+        var products = await _productRepository.GetAllAsync();
+
+        var productsDto = products.Adapt<IEnumerable<ProductDto>>();
+
+        return productsDto;
     }
 
-    public async Task<Product?> GetByIdAsync(Guid id)
+    public async Task<ProductDto> GetByIdAsync(Guid id)
     {
-        return await _productRepository.GetByIdAsync(id);
+        var product = await _productRepository.GetByIdAsync(id);
+
+        var productDto = product.Adapt<ProductDto>();
+
+        return productDto;
     }
 
-    public async Task UpdateAsync(Guid id, Product product)
+    public async Task UpdateAsync(Guid id, ProductDto productDto)
     {
+        var product = productDto.Adapt<Product>();
+
         await _productRepository.UpdateAsync(id, product);
     }
 }

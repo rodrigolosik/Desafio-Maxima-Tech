@@ -1,5 +1,5 @@
 ﻿using Application.Services;
-using Domain.Models;
+using Domain.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
@@ -17,7 +17,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<Product>))]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(IEnumerable<ProductDto>))]
     public async Task<IActionResult> Get()
     {
         var products = await _productService.GetAllAsync();
@@ -26,9 +26,12 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(Product))]
+    [ProducesResponseType((int)HttpStatusCode.OK, Type = typeof(ProductDto))]
     public async Task<IActionResult> GetById(Guid id)
     {
+        if (id == Guid.Empty)
+            return BadRequest("Product not found.");
+
         var product = await _productService.GetByIdAsync(id);
 
         return Ok(product);
@@ -36,8 +39,11 @@ public class ProductsController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType((int)HttpStatusCode.Created)]
-    public async Task<IActionResult> Create([FromBody] Product product)
+    public async Task<IActionResult> Create([FromBody] ProductDto product)
     {
+        if (product is null || product.Code is null || product.Description is null || product.DepartmentId == Guid.Empty) 
+            return BadRequest("Error trying to create new product.");
+
         await _productService.CreateAsync(product);
 
         return Created();
@@ -45,14 +51,13 @@ public class ProductsController : ControllerBase
 
     [HttpPut("{id}")]
     [ProducesResponseType((int)HttpStatusCode.OK)]
-    public async Task<IActionResult> Update(Guid id, [FromBody] Product product)
+    public async Task<IActionResult> Update(Guid id, [FromBody] ProductDto product)
     {
         if (id == Guid.Empty || product is null)
-        {
-            return BadRequest();
-        }
+            return BadRequest("Invalid product.");
 
         await _productService.UpdateAsync(id, product);
+
         return Ok();
     }
 
@@ -60,6 +65,9 @@ public class ProductsController : ControllerBase
     [ProducesResponseType((int)HttpStatusCode.NoContent)]
     public async Task<IActionResult> Delete(Guid id)
     {
+        if (id == Guid.Empty)
+            return BadRequest();
+
         await _productService.DeleteAsync(id);
 
         return NoContent();

@@ -67,14 +67,16 @@ public class ProductRepository : BaseRepository, IProductRepository
             TryOpenConnection();
             return await _dbConnection.QueryAsync<Product>(@"
                 SELECT 
-                    Id, 
-                    Code, 
-                    Description, 
-                    DepartmentId, 
-                    Price, 
-                    Status 
+                    p.Id, 
+                    p.Code, 
+                    p.Description, 
+                    p.DepartmentId, 
+                    p.Price, 
+                    p.Status,
+                    d.Description AS Department
                 FROM 
-                    Products 
+                    Products p
+                    LEFT JOIN Departments d ON p.DepartmentId = d.Id
                 WHERE 
                     Status = 1");
         }
